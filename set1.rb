@@ -101,20 +101,26 @@ puts "Testing all strings for all characters"
 
 # # 1.5
 
-# stanza = 
-#     "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+puts "\nChallenge 1.5"
+stanza = 
+    "Burning 'em, if you ain't quick and nimble\n" + "I go crazy when I hear a cymbal"
 
-# key = 'ICE'
-# keystring = 'ICE' * (stanza.length/2) #ehhhhhhhhh
-# # a cycle function has to fit in here somehow
+key = 'ICE'
+keystring = 'ICE' * (stanza.length/2) #ehhhhhhhhh
+# a cycle function has to fit in here somehow
 
-# solution = ""
-# stanza.split('').each_with_index do |char, i|
-#     char_hex = char.unpack('H*').first
-#     key_char_hex = keystring[i].unpack('H*').first
-#     solution = solution + hex_xor(char_hex, key_char_hex)
-# end
-# # p solution
+solution = ""
+stanza.split('').each_with_index do |char, i|
+    char_hex = char.unpack('H*').first
+    # puts char_hex
+    key_char_hex = keystring[i].unpack('H*').first
+    solution = solution + Crypto.hex_xor(char_hex, key_char_hex)
+end
+
+puts "Is it solved?"
+puts "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272" + 
+"a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f" == solution
+# p solution
 
 # f = File.read('6.txt');
 # $data = f.unpack('m').join;
