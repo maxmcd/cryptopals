@@ -75,29 +75,31 @@ highest_score = 0 #artifically high
 
 puts "Testing all strings for all characters"
 
-# encoded_strings.each do |string|
-#     Crypto.all_characters.each do |character|
-#         output =  ""
-#         string.scan(/../).each do |hex_char|
-#             hex = character.unpack('H*').first
-#             output = output + Crypto.hex_decode(Crypto.hex_xor(hex, hex_char))
-#         end
-#         score = output.scan(/[ETAOIN SHRDLU]/i).size
+=begin
+encoded_strings.each do |string|
+    Crypto.all_characters.each do |character|
+        output =  ""
+        string.scan(/../).each do |hex_char|
+            hex = character.unpack('H*').first
+            output = output + Crypto.hex_decode(Crypto.hex_xor(hex, hex_char))
+        end
+        score = output.scan(/[ETAOIN SHRDLU]/i).size
         
-#         # puts output
-#         if score > highest_score
-#             highest_score = score
-#             best_key = character
-#             best_output = output
-#         end
-#     end
+        # puts output
+        if score > highest_score
+            highest_score = score
+            best_key = character
+            best_output = output
+        end
+    end
 
-#     # highest_score = 0
-# end
+    # highest_score = 0
+end
 
-# puts    "The string is likely #{best_string}. The key is likely " + 
-#         "#{best_key} it had the score " + 
-#         "#{highest_score} and the output was \"#{best_output}\""
+puts    "The string is likely #{best_string}. The key is likely " + 
+        "#{best_key} it had the score " + 
+        "#{highest_score} and the output was \"#{best_output}\""
+=end
 
 # # 1.5
 
@@ -122,41 +124,30 @@ puts "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a2622632427276527
 "a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f" == solution
 # p solution
 
-# f = File.read('6.txt');
-# $data = f.unpack('m').join;
+f = File.read('6.txt');
+$data = f.unpack('m').join;
 
 # puts $data
 
-# def hamming_distance(a, b)
-#     if a.length != b.length
-#         raise "Incompatible Hamming Distance";
-#     end
-#     ua = a.unpack('b*').join;
-#     ub = b.unpack('b*').join;
-#     diff = 0;
-#     ua.length.times { |n|  diff += 1 if ua[n] != ub[n] }
-#     return diff;
-# end
+def data_edit_difference(key_size)
+    chunk_count = $data.length/(key_size*2)
+    distances = []
+    chunk_count.times do |i|
+        offset = i
+        chunk1 = $data[offset..((key_size-1)+offset)]
+        chunk2 = $data[offset+key_size..(offset + (key_size*2)-1)]
+        distances << Crypto.hamming_distance(chunk1, chunk2)/(key_size*1.0)
+    end
+    distances.inject{ |sum, el| sum + el }.to_f / distances.size #average of all distances
+end
 
-# def data_edit_difference(key_size)
-#     chunk_count = $data.length/(key_size*2)
-#     distances = []
-#     chunk_count.times do |i|
-#         offset = i
-#         chunk1 = $data[offset..((key_size-1)+offset)]
-#         chunk2 = $data[offset+key_size..(offset + (key_size*2)-1)]
-#         distances << hamming_distance(chunk1, chunk2)/(key_size*1.0)
-#     end
-#     distances.inject{ |sum, el| sum + el }.to_f / distances.size #average of all distances
-# end
+array = []
+39.times do |i|
+    array << [i+2, data_edit_difference(i+2)]
+end
 
-# array = []
-# 39.times do |i|
-#     array << [i+2, data_edit_difference(i+2)]
-# end
+array = array.sort{|a, b| a[1] <=> b[1]}
 
-# array = array.sort{|a, b| a[1] <=> b[1]}
-
-# array.each do |bit_length, hamming_distance|
-#     puts "#{bit_length} - #{hamming_distance}"
-# end
+array.each do |bit_length, hamming_distance|
+    puts "#{bit_length} - #{hamming_distance}"
+end

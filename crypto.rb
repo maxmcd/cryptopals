@@ -25,5 +25,14 @@ class Crypto
         return ('0'..'9').to_a + ('a'..'z').to_a + ('A'..'Z').to_a
     end
 
-
+    def self.hamming_distance(a, b)
+        if a.length != b.length
+            raise "Incompatible Hamming Distance"
+        end
+        ua = a.unpack('b*').join
+        ub = b.unpack('b*').join
+        diff = 0
+        ua.length.times { |n|  diff += 1 if ua[n] != ub[n] }
+        return diff
+    end
 end
