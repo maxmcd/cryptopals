@@ -10,7 +10,7 @@ class Crypto
     end
 
     def self.hex_xor(first_string, second_string)
-        (first_string.to_i(16) ^ second_string.to_i(16)).to_s(16)
+        (first_string.to_i(16) ^ second_string.to_i(16)).to_s(16).rjust(first_string.length, '0')
     end
 
     def self.hex_decode(string)
