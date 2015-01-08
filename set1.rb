@@ -34,9 +34,8 @@ puts "\nChallenge 1.3"
 
 string = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 
-lowest_score = 0 #artifically high
-best_key = nil
-best_output = nil
+highest_score = 0 #artifically high
+best_string, best_key, best_output = nil, nil, nil
 
 puts "Testing all characters"
 Crypto.all_characters.each do |character|
@@ -46,16 +45,15 @@ Crypto.all_characters.each do |character|
         output = output + Crypto.hex_decode(Crypto.hex_xor(hex, hex_char))
     end
     score = output.scan(/[ETAOIN SHRDLU]/i).size
-    if score > lowest_score
-        lowest_score = score
+    if score > highest_score
+        highest_score = score
         best_key = character
         best_output = output
     end
 end
 
 puts    "The key is likely #{best_key} it had the score " + 
-        "#{lowest_score} and the output was \"#{best_output}\""
-
+        "#{highest_score} and the output was \"#{best_output}\""
 
 
 # 1.4
@@ -74,34 +72,32 @@ end
 
 
 highest_score = 0 #artifically high
-best_key = nil
-best_output = nil
 
 puts "Testing all strings for all characters"
 
-encoded_strings.each do |string|
-    Crypto.all_characters.each do |character|
-        output =  ""
-        string.scan(/../).each do |hex_char|
-            hex = character.unpack('H*').first
-            output = output + Crypto.hex_decode(Crypto.hex_xor(hex, hex_char))
-        end
-        score = output.scan(/[ETAOIN SHRDLU]/i).size
+# encoded_strings.each do |string|
+#     Crypto.all_characters.each do |character|
+#         output =  ""
+#         string.scan(/../).each do |hex_char|
+#             hex = character.unpack('H*').first
+#             output = output + Crypto.hex_decode(Crypto.hex_xor(hex, hex_char))
+#         end
+#         score = output.scan(/[ETAOIN SHRDLU]/i).size
         
-        # puts output
-        if score > highest_score
-            highest_score = score
-            best_key = character
-            best_output = output
-        end
-    end
+#         # puts output
+#         if score > highest_score
+#             highest_score = score
+#             best_key = character
+#             best_output = output
+#         end
+#     end
 
-    # highest_score = 0
-end
+#     # highest_score = 0
+# end
 
-puts    "The key is likely #{best_key} it had the score " + 
-        "#{highest_score} and the output was \"#{best_output}\""
-
+# puts    "The string is likely #{best_string}. The key is likely " + 
+#         "#{best_key} it had the score " + 
+#         "#{highest_score} and the output was \"#{best_output}\""
 
 # # 1.5
 
