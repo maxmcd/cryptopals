@@ -75,7 +75,7 @@ highest_score = 0 #artifically high
 
 puts "Testing all strings for all characters"
 
-=begin
+
 encoded_strings.each do |string|
     Crypto.all_characters.each do |character|
         output =  ""
@@ -90,6 +90,7 @@ encoded_strings.each do |string|
             highest_score = score
             best_key = character
             best_output = output
+            best_string = string
         end
     end
 
@@ -99,7 +100,7 @@ end
 puts    "The string is likely #{best_string}. The key is likely " + 
         "#{best_key} it had the score " + 
         "#{highest_score} and the output was \"#{best_output}\""
-=end
+
 
 # # 1.5
 
@@ -124,10 +125,17 @@ puts "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a2622632427276527
 "a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f" == solution
 # p solution
 
+
+# 1.6
+
+puts "\nChallenge 1.6"
+
 f = File.read('6.txt');
+# puts f.length
 $data = f.unpack('m').join;
 
-# puts $data
+# p $data
+# puts $data.length
 
 def data_edit_difference(key_size)
     chunk_count = $data.length/(key_size*2)
@@ -148,6 +156,22 @@ end
 
 array = array.sort{|a, b| a[1] <=> b[1]}
 
-array.each do |bit_length, hamming_distance|
-    puts "#{bit_length} - #{hamming_distance}"
+# array.each{|a, b| puts "#{a} - #{b}"}
+Keysize = array.first.first
+puts Keysize
+
+keysize_chunks = $data.chars.each_slice(Keysize).map(&:join)
+
+# puts keysize_chunks.to_s
+byte_position_blocks = []
+Keysize.times do |i|
+    byte_position_blocks << keysize_chunks.map{|a| a[i]}.join
 end
+byte_position_blocks.each do |string|
+    print Crypto.solve_for_single_char_xor(string)
+end
+puts "\n"
+
+
+# Exercise 1.7
+# http://www.cse.hcmut.edu.vn/~tuananh/courses/Grid/Schneier%20-%20Applied%20Cryptography%202ed%20-%20Wiley.pdf
