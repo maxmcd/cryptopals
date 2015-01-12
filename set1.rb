@@ -75,7 +75,7 @@ highest_score = 0 #artifically high
 
 puts "Testing all strings for all characters"
 
-
+=begin
 encoded_strings.each do |string|
     Crypto.all_characters.each do |character|
         output =  ""
@@ -96,6 +96,7 @@ encoded_strings.each do |string|
 
     # highest_score = 0
 end
+=end
 
 puts    "The string is likely #{best_string}. The key is likely " + 
         "#{best_key} it had the score " + 
@@ -173,5 +174,23 @@ end
 puts "\n"
 
 
-# Exercise 1.7
+# 1.7
 # http://www.cse.hcmut.edu.vn/~tuananh/courses/Grid/Schneier%20-%20Applied%20Cryptography%202ed%20-%20Wiley.pdf
+puts "\nChallenge 1.7"
+
+data = File.read('7.txt');
+data = Crypto.base64_decode(data)
+message = Crypto.AES_128_ECB_dec(data, "YELLOW SUBMARINE")
+
+# 1.8
+puts "\nChallenge 1.8"
+data = File.read('8.txt');
+data.lines.each do |line|
+    string = line.unpack('m')
+    hash = Hash.new(0)
+    string.first.scan(/.{16}/).each do |sixteen_byte_chunk|
+        hash[sixteen_byte_chunk] += 1
+    end
+    # p line
+    # p hash.map{|a, b| b}
+end
